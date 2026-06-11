@@ -11,18 +11,18 @@ import {
 } from 'drizzle-orm/pg-core'
 import { relations } from 'drizzle-orm'
 
-// Better Auth tables (required) - with snake_case columns
+// Better Auth tables (required) - with camelCase columns
 export const user = pgTable(
   'user',
   {
     id: text('id').primaryKey(),
     email: text('email').notNull().unique(),
-    email_verified: boolean('email_verified').notNull().default(false),
+    emailVerified: boolean('emailVerified').notNull().default(false),
     name: text('name'),
     image: text('image'),
     role: text('role').default('building_manager'),
-    created_at: timestamp('created_at', { withTimezone: true }).defaultNow(),
-    updated_at: timestamp('updated_at', { withTimezone: true }).defaultNow(),
+    createdAt: timestamp('createdAt', { withTimezone: true }).defaultNow(),
+    updatedAt: timestamp('updatedAt', { withTimezone: true }).defaultNow(),
   },
   (table) => ({
     roleIdx: index('idx_user_role').on(table.role),
@@ -31,36 +31,36 @@ export const user = pgTable(
 
 export const session = pgTable('session', {
   id: text('id').primaryKey(),
-  user_id: text('user_id').notNull().references(() => user.id, { onDelete: 'cascade' }),
-  expires_at: timestamp('expires_at', { withTimezone: true }).notNull(),
+  userId: text('userId').notNull().references(() => user.id, { onDelete: 'cascade' }),
+  expiresAt: timestamp('expiresAt', { withTimezone: true }).notNull(),
   token: text('token').notNull().unique(),
-  created_at: timestamp('created_at', { withTimezone: true }).defaultNow(),
-  updated_at: timestamp('updated_at', { withTimezone: true }).defaultNow(),
+  createdAt: timestamp('createdAt', { withTimezone: true }).defaultNow(),
+  updatedAt: timestamp('updatedAt', { withTimezone: true }).defaultNow(),
 })
 
 export const account = pgTable('account', {
   id: text('id').primaryKey(),
-  user_id: text('user_id').notNull().references(() => user.id, { onDelete: 'cascade' }),
-  account_id: text('account_id').notNull(),
-  provider_id: text('provider_id').notNull(),
-  access_token: text('access_token'),
-  refresh_token: text('refresh_token'),
-  id_token: text('id_token'),
-  access_token_expires_at: timestamp('access_token_expires_at', { withTimezone: true }),
-  refresh_token_expires_at: timestamp('refresh_token_expires_at', { withTimezone: true }),
+  userId: text('userId').notNull().references(() => user.id, { onDelete: 'cascade' }),
+  accountId: text('accountId').notNull(),
+  providerId: text('providerId').notNull(),
+  accessToken: text('accessToken'),
+  refreshToken: text('refreshToken'),
+  idToken: text('idToken'),
+  accessTokenExpiresAt: timestamp('accessTokenExpiresAt', { withTimezone: true }),
+  refreshTokenExpiresAt: timestamp('refreshTokenExpiresAt', { withTimezone: true }),
   scope: text('scope'),
   password: text('password'),
-  created_at: timestamp('created_at', { withTimezone: true }).defaultNow(),
-  updated_at: timestamp('updated_at', { withTimezone: true }).defaultNow(),
+  createdAt: timestamp('createdAt', { withTimezone: true }).defaultNow(),
+  updatedAt: timestamp('updatedAt', { withTimezone: true }).defaultNow(),
 })
 
 export const verification = pgTable('verification', {
   id: text('id').primaryKey(),
   identifier: text('identifier').notNull(),
   value: text('value').notNull(),
-  expires_at: timestamp('expires_at', { withTimezone: true }).notNull(),
-  created_at: timestamp('created_at', { withTimezone: true }).defaultNow(),
-  updated_at: timestamp('updated_at', { withTimezone: true }).defaultNow(),
+  expiresAt: timestamp('expiresAt', { withTimezone: true }).notNull(),
+  createdAt: timestamp('createdAt', { withTimezone: true }).defaultNow(),
+  updatedAt: timestamp('updatedAt', { withTimezone: true }).defaultNow(),
 })
 
 // WB-FDVA Application tables with snake_case
